@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2566">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.7px Arial; -webkit-text-stroke: #000000}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.7px Arial; -webkit-text-stroke: #000000; min-height: 16.0px}
+    span.s1 {font-kerning: none}
+  </style>
+</head>
+<body>
+<p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
+<p class="p1"><span class="s1">&lt;html&gt;</span></p>
+<p class="p1"><span class="s1">  &lt;head&gt;</span></p>
+<p class="p1"><span class="s1">    &lt;script src="https://cdn.jsdelivr.net/npm/chart.js"&gt;&lt;/script&gt;</span></p>
+<p class="p1"><span class="s1">    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</span></p>
+<p class="p1"><span class="s1">    &lt;style&gt;</span></p>
+<p class="p1"><span class="s1">      body { margin: 0; padding: 0; }</span></p>
+<p class="p1"><span class="s1">      canvas { width: 100% !important; height: auto !important; }</span></p>
+<p class="p1"><span class="s1">    &lt;/style&gt;</span></p>
+<p class="p1"><span class="s1">  &lt;/head&gt;</span></p>
+<p class="p1"><span class="s1">  &lt;body&gt;</span></p>
+<p class="p1"><span class="s1">    &lt;canvas id="myChart"&gt;&lt;/canvas&gt;</span></p>
+<p class="p1"><span class="s1">    &lt;script&gt;</span></p>
+<p class="p1"><span class="s1">      const urlParams = new URLSearchParams(window.location.search);</span></p>
+<p class="p1"><span class="s1">      const pesoInicial = parseFloat(urlParams.get('peso')) || 60; // peso por defecto: 60g</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">      const intervalo = 0.5; // pasos de medio día</span></p>
+<p class="p1"><span class="s1">      const diasTotales = 31.5;</span></p>
+<p class="p1"><span class="s1">      const pasos = Math.floor(diasTotales / intervalo) + 1;</span></p>
+<p class="p1"><span class="s1">      const perdidaTotal = pesoInicial * 0.15;</span></p>
+<p class="p1"><span class="s1">      const perdidaDiaria = perdidaTotal / diasTotales;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">      const labels = [];</span></p>
+<p class="p1"><span class="s1">      const data = [];</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">      for (let i = 0; i &lt;= pasos; i++) {</span></p>
+<p class="p1"><span class="s1">        const dia = i * intervalo;</span></p>
+<p class="p1"><span class="s1">        labels.push(dia.toFixed(1)); // eje X: días</span></p>
+<p class="p1"><span class="s1">        const pesoDia = pesoInicial - (dia * perdidaDiaria);</span></p>
+<p class="p1"><span class="s1">        data.push(pesoDia.toFixed(2));</span></p>
+<p class="p1"><span class="s1">      }</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">      const ctx = document.getElementById('myChart').getContext('2d');</span></p>
+<p class="p1"><span class="s1">      new Chart(ctx, {</span></p>
+<p class="p1"><span class="s1">        type: 'line',</span></p>
+<p class="p1"><span class="s1">        data: {</span></p>
+<p class="p1"><span class="s1">          labels: labels,</span></p>
+<p class="p1"><span class="s1">          datasets: [{</span></p>
+<p class="p1"><span class="s1">            label: 'Peso del huevo (g)',</span></p>
+<p class="p1"><span class="s1">            data: data,</span></p>
+<p class="p1"><span class="s1">            fill: false,</span></p>
+<p class="p1"><span class="s1">            borderColor: 'blue',</span></p>
+<p class="p1"><span class="s1">            tension: 0.2</span></p>
+<p class="p1"><span class="s1">          }]</span></p>
+<p class="p1"><span class="s1">        },</span></p>
+<p class="p1"><span class="s1">        options: {</span></p>
+<p class="p1"><span class="s1">          responsive: true,</span></p>
+<p class="p1"><span class="s1">          plugins: {</span></p>
+<p class="p1"><span class="s1">            legend: { display: true }</span></p>
+<p class="p1"><span class="s1">          },</span></p>
+<p class="p1"><span class="s1">          scales: {</span></p>
+<p class="p1"><span class="s1">            x: {</span></p>
+<p class="p1"><span class="s1">              title: { display: true, text: 'Días' }</span></p>
+<p class="p1"><span class="s1">            },</span></p>
+<p class="p1"><span class="s1">            y: {</span></p>
+<p class="p1"><span class="s1">              title: { display: true, text: 'Peso (g)' }</span></p>
+<p class="p1"><span class="s1">            }</span></p>
+<p class="p1"><span class="s1">          }</span></p>
+<p class="p1"><span class="s1">        }</span></p>
+<p class="p1"><span class="s1">      });</span></p>
+<p class="p1"><span class="s1">    &lt;/script&gt;</span></p>
+<p class="p1"><span class="s1">  &lt;/body&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+</body>
+</html>
