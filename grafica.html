@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #f2f2f2;
+        font-family: sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .card {
+        background: white;
+        padding: 16px;
+        border-radius: 16px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        width: 1480px;
+        height: 700px;
+        box-sizing: border-box;
+      }
+
+      canvas {
+        width: 100% !important;
+        height: 100% !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <canvas id="myChart"></canvas>
+    </div>
+
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const pesoInicial = parseFloat(urlParams.get('peso')) || 60;
+
+      const intervalo = 0.5;
+      const diasTotales = 31.5;
+      const pasos = Math.floor(diasTotales / intervalo) + 1;
+      const perdidaTotal = pesoInicial * 0.15;
+      const perdidaDiaria = perdidaTotal / diasTotales;
+
+      const labels = [];
+      const data = [];
+
+      for (let i = 0; i <= pasos; i++) {
+        const dia = i * intervalo;
+        labels.push(dia.toFixed(1));
+        const pesoDia = pesoInicial - (dia * perdidaDiaria);
+        data.push(pesoDia.toFixed(2));
+      }
+
+      const ctx = document.getElementById('myChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Peso del huevo (g)',
+            data: data,
+            fill: false,
+            borderColor: '#3498db',
+            tension: 0.25
+          }]
+        },
+        options: {
+          responsive: false,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: true }
+          },
+          scales: {
+            x: {
+              title: { display: true, text: 'Días' }
+            },
+            y: {
+              title: { display: true, text: 'Peso (g)' }
+            }
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
