@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      body { margin: 0; padding: 0; }
+      canvas { width: 100% !important; height: auto !important; }
+    </style>
+  </head>
+  <body>
+    <canvas id="myChart"></canvas>
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const pesoInicial = parseFloat(urlParams.get('peso')) || 60;
+
+      const intervalo = 0.5;
+      const diasTotales = 31.5;
+      const pasos = Math.floor(diasTotales / intervalo) + 1;
+      const perdidaTotal = pesoInicial * 0.15;
+      const perdidaDiaria = perdidaTotal / diasTotales;
+
+      const labels = [];
+      const data = [];
+
+      for (let i = 0; i <= pasos; i++) {
+        const dia = i * intervalo;
+        labels.push(dia.toFixed(1));
+        const pesoDia = pesoInicial - (dia * perdidaDiaria);
+        data.push(pesoDia.toFixed(2));
+      }
+
+      const ctx = document.getElementById('myChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Peso del huevo (g)',
+            data: data,
+            fill: false,
+            borderColor: 'blue',
+            tension: 0.2
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: true }
+          },
+          scales: {
+            x: {
+              title: { display: true, text: 'Días' }
+            },
+            y: {
+              title: { display: true, text: 'Peso (g)' }
+            }
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
